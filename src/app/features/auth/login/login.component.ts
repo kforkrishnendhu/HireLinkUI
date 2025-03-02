@@ -1,0 +1,30 @@
+import { Component } from '@angular/core';
+import { AuthService } from '../../../core/services/auth.service';
+import { FormsModule } from '@angular/forms';
+import { Token } from '@angular/compiler';
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [FormsModule],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss'
+})
+export class LoginComponent {
+  email = '';
+  password = '';
+
+  constructor(private authService: AuthService) {}
+
+  onSubmit() {
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response) => {
+        console.log('Login successful:', response);
+        localStorage.setItem('authToken', response.token || '');
+      },
+      error: (err) => {
+        console.error('Login failed:', err.error.message);
+      }
+    });
+  }
+}
