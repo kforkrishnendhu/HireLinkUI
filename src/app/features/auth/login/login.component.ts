@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { FormsModule } from '@angular/forms';
-import { Token } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,13 +14,23 @@ export class LoginComponent {
   email = '';
   password = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   onSubmit() {
     this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
         console.log('Login successful:', response);
-        localStorage.setItem('authToken', response.token || '');
+        this.authService.saveToken(response.token || '');
+        const userRole = this.authService.getUserRole();
+        alert(userRole);
+
+        if (userRole === 'Admin') {
+          this.router.navigate(['/admin']);
+        } else if (userRole === 'Company') {
+          this.router.navigate(['/company-dashboard']);
+        } else {
+          this.router.navigate(['/jobseeker-dashboard']);
+        }
       },
       error: (err) => {
         console.error('Login failed:', err.error.message);

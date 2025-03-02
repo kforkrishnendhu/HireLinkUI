@@ -1,0 +1,40 @@
+<div class="min-h-screen bg-gray-100 flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white shadow-md">
+    <div class="p-6">
+      <h2 class="text-2xl font-semibold text-gray-800">Admin Dashboard</h2>
+    </div>
+    <nav class="mt-4">
+      <a routerLink="jobseekers" class="block px-6 py-3 text-gray-700 hover:bg-gray-200">Job Seekers</a>
+      <a routerLink="companies" class="block px-6 py-3 text-gray-700 hover:bg-gray-200">Companies</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8">
+    <h1 class="text-3xl font-bold text-gray-900">Welcome, Admin!</h1>
+    <p class="mt-2 text-gray-600">Manage job seekers, companies, and more from here.</p>
+
+    <div class="mt-6 grid grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- Card 1 -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-lg font-semibold">Job Seekers</h3>
+        <p class="text-gray-600">Manage registered job seekers</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-lg font-semibold">Companies</h3>
+        <p class="text-gray-600">Manage registered companies</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-lg font-semibold">Settings</h3>
+        <p class="text-gray-600">Update admin preferences</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+  <router-outlet></router-outlet>
