@@ -4,8 +4,9 @@ import { RegisterComponent } from './features/auth/register/register.component';
 import { AuthService } from './core/services/auth.service';
 import { inject } from '@angular/core';
 import { AuthGuard } from './core/guards/auth.guard';
-import { JobseekerManagementComponent } from './features/admin/jobseeker-management/jobseeker-management.component';
+import { JobSeekerManagementComponent } from './features/admin/jobseeker-management/jobseeker-management.component';
 import { AdminComponent } from './features/admin/admin/admin.component';
+import { OtpVerificationComponent } from './features/auth/otp-verification/otp-verification.component';
 
 const roleGuard = (role: string) => () => {
     const authService = inject(AuthService);
@@ -22,7 +23,8 @@ export const routes: Routes = [
         path: 'auth',
         children: [
             { path: 'login', component: LoginComponent },
-            { path: 'register', component: RegisterComponent }
+            { path: 'register', component: RegisterComponent },
+            { path: 'otp-verification', component: OtpVerificationComponent }
         ]
     },
     {
@@ -30,7 +32,7 @@ export const routes: Routes = [
         component: AdminComponent,
         canActivate: [AuthGuard, roleGuard('Admin')],
         children: [
-            { path: 'jobseekers', component: JobseekerManagementComponent },
+            { path: 'jobseekers', component: JobSeekerManagementComponent },
             //{ path: 'companies', component: CompanyManagementComponent }
         ]
     },

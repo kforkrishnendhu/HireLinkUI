@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from '../../../environments/environment';
 
 interface LoginResponse {
   message: string;
@@ -13,7 +14,7 @@ interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
- private apiUrl='https://localhost:7185/api/Auth';
+ private apiUrl= environment.apiUrl +'/Auth';       
  private tokenKey = 'authToken';
 
   constructor(private http:HttpClient, private router:Router) { }
@@ -32,6 +33,14 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/register`, userRegisterDto);
   }
 
+  verifyOtp(email: string, otp: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/verify-otp`, { email, otp });
+  }
+
+  resendOtp(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/resend-otp`, { email });
+  }
+  
   // Save token to local storage
   saveToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
