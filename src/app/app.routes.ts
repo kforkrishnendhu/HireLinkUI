@@ -7,6 +7,11 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { JobSeekerManagementComponent } from './features/admin/jobseeker-management/jobseeker-management.component';
 import { AdminComponent } from './features/admin/admin/admin.component';
 import { OtpVerificationComponent } from './features/auth/otp-verification/otp-verification.component';
+import { DashboardComponent } from './features/admin/dashboard/dashboard.component';
+import { CompanyManagementComponent } from './features/admin/company-management/company-management.component';
+import { UnauthorizedComponent } from './features/auth/unauthorized/unauthorized.component';
+import { adminGuard } from './core/guards/admin.guard';
+import { HomeComponent } from './features/auth/home/home.component';
 
 const roleGuard = (role: string) => () => {
     const authService = inject(AuthService);
@@ -21,19 +26,22 @@ const roleGuard = (role: string) => () => {
 export const routes: Routes = [
     {
         path: 'auth',
+        component: HomeComponent,
         children: [
             { path: 'login', component: LoginComponent },
             { path: 'register', component: RegisterComponent },
-            { path: 'otp-verification', component: OtpVerificationComponent }
+            { path: 'otp-verification', component: OtpVerificationComponent },
+            { path: 'unauthorized', component: UnauthorizedComponent }
         ]
     },
     {
         path: 'admin',
         component: AdminComponent,
-        canActivate: [AuthGuard, roleGuard('Admin')],
+        canActivate: [AuthGuard, adminGuard],
         children: [
             { path: 'jobseekers', component: JobSeekerManagementComponent },
-            //{ path: 'companies', component: CompanyManagementComponent }
+            { path: 'company', component: CompanyManagementComponent },
+            { path: 'dashboard', component: DashboardComponent }
         ]
     },
     { path: '', redirectTo: 'auth/login', pathMatch: 'full' },  // Default Route

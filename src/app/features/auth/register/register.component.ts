@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { AuthService } from '../../../core/services/auth.service';
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -18,6 +19,8 @@ export class RegisterComponent implements OnInit {
   submitted = false;
   errorMessage: string = '';
   role: string = 'JobSeeker'; // Default role
+  private authSubscription?: Subscription; // Store subscription reference
+
 
   constructor(
     private fb: FormBuilder,
@@ -40,7 +43,6 @@ export class RegisterComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
-
   get f() {
     return this.registerForm.controls;
   }
@@ -54,7 +56,7 @@ export class RegisterComponent implements OnInit {
 
     const { fullName, email, password } = this.registerForm.value;
 
-    this.authService.register(fullName, email, password, this.role).subscribe({
+    this.authSubscription = this.authService.register(fullName, email, password, this.role).subscribe({
       next: (response) => {
         console.log('Registration successful:', response);
         alert('Registration successful! Redirecting to OTP verification...');
@@ -65,6 +67,12 @@ export class RegisterComponent implements OnInit {
         this.errorMessage = err.error.message || 'Registration failed. Please try again.';
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
   }
 }
 

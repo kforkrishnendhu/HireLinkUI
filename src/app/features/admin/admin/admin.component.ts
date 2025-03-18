@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -9,5 +9,11 @@ import { RouterModule } from '@angular/router';
   styleUrl: './admin.component.scss'
 })
 export class AdminComponent {
+  constructor(private router:Router) {}
+
+logout() {
+    localStorage.removeItem('authToken'); // Remove token from storage
+    this.router.navigate(['/auth/login']); // Redirect to login page
+}
 
 }
