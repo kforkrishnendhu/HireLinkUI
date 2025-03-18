@@ -3,6 +3,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,9 @@ export class LoginComponent implements OnInit{
   private fb = inject(FormBuilder);
   loginForm!: FormGroup;
   errorMessage: string | null = null;
-  submitted =false;
+  submitted =false; 
+  private authSubscription?: Subscription; // Store subscription reference
+
 
   constructor(private authService: AuthService,private router:Router) {}
 
@@ -40,14 +43,13 @@ export class LoginComponent implements OnInit{
   
     const { email, password } = this.loginForm.value;
     
-    this.authService.login(email, password).subscribe({
+    this.authSubscription = this.authService.login(email, password).subscribe({
       next: (response) => {
         console.log('Login successful:', response);
-        this.authService.saveToken(response.token || '');
+        // this.authService.saveToken((response.accessToken, response.refreshToken )|| '','');
         const userRole = this.authService.getUserRole();
-
         if (userRole === 'Admin') {
-          this.router.navigate(['/admin']);
+          this.router.navigate(['/admin/dashboard']);
         } else if (userRole === 'Company') {
           this.router.navigate(['/company-dashboard']);
         } else {
@@ -58,6 +60,12 @@ export class LoginComponent implements OnInit{
         this.errorMessage = err.error.message;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
   }
   
 }
