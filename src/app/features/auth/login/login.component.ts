@@ -48,13 +48,25 @@ export class LoginComponent implements OnInit{
         console.log('Login successful:', response);
         // this.authService.saveToken((response.accessToken, response.refreshToken )|| '','');
         const userRole = this.authService.getUserRole();
-        if (userRole === 'Admin') {
-          this.router.navigate(['/admin/dashboard']);
-        } else if (userRole === 'Company') {
-          this.router.navigate(['/company-dashboard']);
-        } else {
-          this.router.navigate(['/jobseeker-dashboard']);
-        }
+
+        setTimeout(() => {
+          console.log('Navigating after saving token...');
+          if (userRole === 'Admin') {
+            this.router.navigate(['/admin/dashboard']);
+          } else if (userRole === 'Company') {
+            this.router.navigate(['/company-dashboard']);
+          } else {
+            this.router.navigate(['/jobseeker-dashboard']);
+          }
+        }, 100);
+        
+        // if (userRole === 'Admin') {
+        //   this.router.navigate(['/admin/dashboard']);
+        // } else if (userRole === 'Company') {
+        //   this.router.navigate(['/company-dashboard']);
+        // } else {
+        //   this.router.navigate(['/jobseeker-dashboard']);
+        // }
       },
       error: (err) => {
         this.errorMessage = err.error.message;

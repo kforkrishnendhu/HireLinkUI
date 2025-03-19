@@ -19,10 +19,12 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     return next(modifiedReq).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
+          console.log('refreshing..........');
           // Try refreshing the token
           return authService.refreshAccessToken().pipe(
             switchMap(newToken => {
               modifiedReq = req.clone({ setHeaders: { Authorization: `Bearer ${newToken}` } });
+              console.log(newToken);
               return next(modifiedReq);
             }),
             catchError(refreshError => {
