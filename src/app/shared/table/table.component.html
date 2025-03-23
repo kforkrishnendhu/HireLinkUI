@@ -1,0 +1,25 @@
+<div class="overflow-x-auto">
+    <table class="min-w-full border rounded-lg">
+      <thead>
+        <tr class="bg-gray-200 text-gray-700">
+          <th *ngFor="let col of columns" class="px-4 py-2 text-left">{{ col.label }}</th>
+          <th *ngIf="actions.length > 0" class="px-4 py-2 text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data; trackBy: trackByFn" class="border-b">
+          <td *ngFor="let col of columns" class="px-4 py-2">{{ row[col.key] }}</td>
+          <td *ngIf="actions.length > 0" class="px-4 py-2 space-x-2">
+            <button 
+              *ngFor="let action of actions" 
+              [class]="action.class"
+              (click)="onActionClick(action.action, row, $event)"
+            >
+              {{ action.icon }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { UserRole } from '../../../core/models/user-role.enum';
 
 @Component({
   selector: 'app-home',
@@ -9,5 +10,5 @@ import { RouterModule } from '@angular/router';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-
+UserRole=UserRole;
 }

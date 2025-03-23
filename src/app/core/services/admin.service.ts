@@ -26,16 +26,24 @@ export class AdminService {
 
   constructor(private http: HttpClient) {}
 
-  getJobSeekers(): Observable<{ success: boolean; data: JobSeeker[] }> {
-    return this.http.get<{ success: boolean; data: JobSeeker[] }>(`${this.apiUrl}/jobseekers`);
+  getJobSeekers(page: number = 1, pageSize: number = 10, search?: string): Observable<{ success: boolean; data: { jobSeekers: JobSeeker[]; totalCount: number } }> {
+    let url = `${this.apiUrl}/jobseekers?page=${page}&pageSize=${pageSize}`;
+    if (search) {
+      url += `&search=${encodeURIComponent(search)}`;
+    }
+    return this.http.get<{ success: boolean; data: { jobSeekers: JobSeeker[]; totalCount: number } }>(url);
   }
 
   deleteJobSeeker(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete-jobseekers/${id}`);
   }
 
-  getCompanies(): Observable<{ success: boolean; data: Company[] }> {
-    return this.http.get<{ success: boolean; data: Company[] }>(`${this.apiUrl}/companies`);
+  getCompanies(page: number = 1, pageSize: number = 10,search?: string): Observable<{ success: boolean; data: { companies: Company[]; totalCount: number } }> {
+    let url = `${this.apiUrl}/companies?page=${page}&pageSize=${pageSize}`;
+    if (search) {
+      url += `&search=${encodeURIComponent(search)}`;
+    }
+    return this.http.get<{ success: boolean; data: { companies: Company[]; totalCount: number } }>(url);
   }
 
   deleteCompany(id: number): Observable<void> {

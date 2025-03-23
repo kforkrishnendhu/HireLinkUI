@@ -30,11 +30,12 @@ export class AuthService {
     );
   }
 
-  register(fullName: string, email: string, password: string, role: string): Observable<any> {
+  register(fullName: string, email: string, password: string, confirmPassword:string, role: string): Observable<any> {
     const userRegisterDto = {
       fullName,
       email,
       password,
+      confirmPassword,
       role
     };
     return this.http.post<any>(`${this.apiUrl}/register`, userRegisterDto);
@@ -111,6 +112,30 @@ export class AuthService {
       console.error('Error decoding token:', error);
       return null;
     }
+}
+
+ // Extract user email from token
+ getUserEmail(): string | null {
+  const token = this.getAccessToken();
+  console.log(token);
+  if (!token) {
+    console.error('No access token found.');
+    return null;
+  }
+
+  try {
+    const decodedToken: any = jwtDecode(token);
+    console.log('Decoded Token:', decodedToken);
+
+    return (
+      decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ||
+      decodedToken['email'] ||
+      null
+    );
+  } catch (error) {
+    console.error('Error decoding token:', error);
+    return null;
+  }
 }
 
 

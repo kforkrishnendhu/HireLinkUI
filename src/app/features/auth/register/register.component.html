@@ -14,7 +14,7 @@
                     <span *ngIf="f['fullName'].errors?.['required']">Full Name is required.</span>
                 </div>
             </div>
-        
+
             <!-- Email -->
             <div>
                 <label class="block text-gray-700 font-medium">Email</label>
@@ -25,32 +25,45 @@
                     <span *ngIf="f['email'].errors?.['email']">Invalid email format.</span>
                 </div>
             </div>
-        
+
             <!-- Password -->
             <div>
                 <label class="block text-gray-700 font-medium">Password</label>
-                <input type="password" formControlName="password"
+                <input type="password" formControlName="password" appPasswordValidator
                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 <div *ngIf="submitted && f['password'].invalid" class="text-red-500 font-semibold mt-1">
                     <span *ngIf="f['password'].errors?.['required']">Password is required.</span>
                     <span *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters.</span>
+                    <span *ngIf="f['password'].errors?.['strongPassword']">Password must include uppercase, lowercase,
+                        number, and special character.</span>
                 </div>
             </div>
-        
+
+            <!-- Confirm Password -->
+            <div>
+                <label class="block text-gray-700 font-medium">Confirm Password</label>
+                <input type="password" formControlName="confirmPassword" appMustMatch="['password', 'confirmPassword']"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <div *ngIf="submitted && f['confirmPassword'].invalid" class="text-red-500 font-semibold mt-1">
+                    <span *ngIf="f['confirmPassword'].errors?.['required']">Confirm Password is required.</span>
+                    <span *ngIf="f['confirmPassword'].errors?.['mustMatch']">Passwords must match.</span>
+                </div>
+            </div>
+
             <!-- Submit Button -->
             <button type="submit"
                 class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition">
                 Register
             </button>
-        
+
             <p *ngIf="submitted && registerForm.invalid" class="text-red-500 font-semibold mt-2">
                 Please fill in all required fields correctly.
             </p>
             <div *ngIf="errorMessage" class="text-red-500 font-semibold mt-2">
                 {{ errorMessage }}
-              </div>
+            </div>
         </form>
-        
+
 
         <!-- Login Redirect -->
         <p class="mt-4 text-center text-gray-600">

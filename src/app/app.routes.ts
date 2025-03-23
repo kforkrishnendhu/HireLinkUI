@@ -12,6 +12,10 @@ import { CompanyManagementComponent } from './features/admin/company-management/
 import { UnauthorizedComponent } from './features/auth/unauthorized/unauthorized.component';
 import { adminGuard } from './core/guards/admin.guard';
 import { HomeComponent } from './features/auth/home/home.component';
+import { JobSeekerComponent } from './features/job-seeker/job-seeker/job-seeker.component';
+import { jobseekerGuard } from './core/guards/jobseeker.guard';
+import { CompanyComponent } from './features/company/company/company.component';
+import { companyGuard } from './core/guards/company.guard';
 
 const roleGuard = (role: string) => () => {
     const authService = inject(AuthService);
@@ -42,6 +46,22 @@ export const routes: Routes = [
             { path: 'jobseekers', component: JobSeekerManagementComponent },
             { path: 'company', component: CompanyManagementComponent },
             { path: 'dashboard', component: DashboardComponent }
+        ]
+    },
+    {
+        path: 'jobseeker',
+        component: JobSeekerComponent,
+        canActivate: [AuthGuard, jobseekerGuard],
+        children: [
+            { path: 'jobseekers', component: JobSeekerComponent }
+        ]
+    },
+    {
+        path: 'company',
+        component: CompanyComponent,
+        canActivate: [AuthGuard, companyGuard],
+        children: [
+            { path: 'company', component: CompanyComponent }
         ]
     },
     { path: '', redirectTo: 'auth/login', pathMatch: 'full' },  // Default Route
