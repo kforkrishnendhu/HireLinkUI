@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
@@ -15,10 +15,10 @@ import { UserRole } from '../../../core/models/user-role.enum';
 })
 
 
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   registerForm!: FormGroup;
   submitted = false;
-  errorMessage: string = '';
+  errorMessage = '';
   role!: UserRole;
   private authSubscription?: Subscription; // Store subscription reference
 

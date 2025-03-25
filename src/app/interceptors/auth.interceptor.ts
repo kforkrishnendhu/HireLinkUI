@@ -9,7 +9,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   const router = inject(Router);
   const authService = inject(AuthService);
 
-  let token = authService.getAccessToken();
+  const token = authService.getAccessToken();
 
   // Attach token to headers if available
   let modifiedReq = token

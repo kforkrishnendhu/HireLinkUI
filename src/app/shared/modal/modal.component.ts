@@ -9,15 +9,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './modal.component.scss'
 })
 export class ModalComponent {
-  @Input() title: string = '';
-  @Input() isOpen: boolean = false;
+  @Input() title = '';
+  @Input() isOpen = false;
   @Input() modalType: 'addCompany' | 'view' | 'delete' = 'view';
   @Output() closeModal = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<any>();
 
-  companyName: string = '';
-  companyEmail: string = '';
-  companyWebsite: string = '';
+  companyName = '';
+  companyEmail = '';
+  companyWebsite = '';
 
   close() {
     this.closeModal.emit();

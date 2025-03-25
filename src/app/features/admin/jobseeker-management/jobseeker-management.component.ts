@@ -23,13 +23,13 @@ export class JobSeekerManagementComponent implements OnInit {
 
   jobSeekers: JobSeeker[] = [];
   filteredJobSeekers: JobSeeker[] = [];
-  searchQuery: string = '';
+  searchQuery = '';
   searchTerm = new Subject<string>(); // RxJS Subject for debouncing
 
   // Pagination properties
-  currentPage: number = 1;
-  pageSize: number = 10; // Number of jobseekers per page
-  totalJobseekers: number = 0; // Total jobseekers count from the backend
+  currentPage = 1;
+  pageSize = 10; // Number of jobseekers per page
+  totalJobseekers = 0; // Total jobseekers count from the backend
 
   selectedJobSeeker: JobSeeker | null = null;
   isViewModalOpen = false;

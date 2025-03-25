@@ -26,7 +26,7 @@ export class AdminService {
 
   constructor(private http: HttpClient) {}
 
-  getJobSeekers(page: number = 1, pageSize: number = 10, search?: string): Observable<{ success: boolean; data: { jobSeekers: JobSeeker[]; totalCount: number } }> {
+  getJobSeekers(page = 1, pageSize = 10, search?: string): Observable<{ success: boolean; data: { jobSeekers: JobSeeker[]; totalCount: number } }> {
     let url = `${this.apiUrl}/jobseekers?page=${page}&pageSize=${pageSize}`;
     if (search) {
       url += `&search=${encodeURIComponent(search)}`;
@@ -38,7 +38,7 @@ export class AdminService {
     return this.http.delete<void>(`${this.apiUrl}/delete-jobseekers/${id}`);
   }
 
-  getCompanies(page: number = 1, pageSize: number = 10,search?: string): Observable<{ success: boolean; data: { companies: Company[]; totalCount: number } }> {
+  getCompanies(page = 1, pageSize = 10,search?: string): Observable<{ success: boolean; data: { companies: Company[]; totalCount: number } }> {
     let url = `${this.apiUrl}/companies?page=${page}&pageSize=${pageSize}`;
     if (search) {
       url += `&search=${encodeURIComponent(search)}`;

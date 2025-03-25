@@ -16,6 +16,8 @@ import { JobSeekerComponent } from './features/job-seeker/job-seeker/job-seeker.
 import { jobseekerGuard } from './core/guards/jobseeker.guard';
 import { CompanyComponent } from './features/company/company/company.component';
 import { companyGuard } from './core/guards/company.guard';
+import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './features/auth/reset-password/reset-password.component';
 
 const roleGuard = (role: string) => () => {
     const authService = inject(AuthService);
@@ -35,6 +37,8 @@ export const routes: Routes = [
             { path: 'login', component: LoginComponent },
             { path: 'register', component: RegisterComponent },
             { path: 'otp-verification', component: OtpVerificationComponent },
+            { path: 'forgot-password', component: ForgotPasswordComponent },
+            { path: 'reset-password', component: ResetPasswordComponent },
             { path: 'unauthorized', component: UnauthorizedComponent }
         ]
     },

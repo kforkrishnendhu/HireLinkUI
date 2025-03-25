@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,13 +12,13 @@ import { Subscription } from 'rxjs';
   templateUrl: './otp-verification.component.html',
   styleUrl: './otp-verification.component.scss'
 })
-export class OtpVerificationComponent implements OnInit {
+export class OtpVerificationComponent implements OnInit, OnDestroy {
   otpForm!: FormGroup;
   submitted = false;
   errorMessage: string | null = null;
-  email: string = '';
-  countdown: number = 60; // Timer starts from 60 seconds
-  timerActive: boolean = true; // Timer is active initially
+  email = '';
+  countdown = 60; // Timer starts from 60 seconds
+  timerActive = true; // Timer is active initially
   interval: any;
   private subscriptions: Subscription = new Subscription(); // Store all subscriptions
 

@@ -22,13 +22,13 @@ export class CompanyManagementComponent implements OnInit {
 
   companies: Company[] = [];
   filteredCompanies: Company[] = [];
-  searchQuery: string = '';
+  searchQuery = '';
   searchTerm = new Subject<string>(); // RxJS Subject for debouncing
 
   // Pagination properties
-  currentPage: number = 1;
-  pageSize: number = 10; // Number of companies per page
-  totalCompanies: number = 0; // Total companies count from the backend
+  currentPage = 1;
+  pageSize = 10; // Number of companies per page
+  totalCompanies = 0; // Total companies count from the backend
 
   selectedCompany: Company | null = null;
   isViewModalOpen = false;
