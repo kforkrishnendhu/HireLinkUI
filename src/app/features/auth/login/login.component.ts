@@ -4,23 +4,26 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule,CommonModule,RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit, OnDestroy{
+export class LoginComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   loginForm!: FormGroup;
   errorMessage: string | null = null;
-  submitted =false; 
+  submitted = false;
   private authSubscription?: Subscription; // Store subscription reference
 
 
-  constructor(private authService: AuthService,private router:Router) {}
+  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -34,15 +37,14 @@ export class LoginComponent implements OnInit, OnDestroy{
   }
 
   onSubmit() {
-    this.submitted=true;
-    if (this.loginForm.invalid)
-    {
+    this.submitted = true;
+    if (this.loginForm.invalid) {
       // this.errorMessage='invalid credentials';
       return;
     }
-  
+
     const { email, password } = this.loginForm.value;
-    
+
     this.authSubscription = this.authService.login(email, password).subscribe({
       next: (response) => {
         console.log('Login successful:', response);
@@ -54,7 +56,7 @@ export class LoginComponent implements OnInit, OnDestroy{
           if (userRole === 'Admin') {
             this.router.navigate(['/admin/dashboard']);
           } else if (userRole === 'Company') {
-            this.router.navigate(['/company']);
+            this.router.navigate(['/company/company-profile']);
           } else {
             this.router.navigate(['/jobseeker']);
           }
@@ -69,7 +71,14 @@ export class LoginComponent implements OnInit, OnDestroy{
         // }
       },
       error: (err) => {
-        this.errorMessage = err.error.message;
+        console.error('Login failed:', err);
+
+        const message =
+          typeof err?.error === 'string'
+            ? err.error
+            : err?.error?.message || 'Login failed';
+
+        this.toastr.error(message, 'Error', { timeOut: 3000 });
       }
     });
   }
@@ -79,5 +88,5 @@ export class LoginComponent implements OnInit, OnDestroy{
       this.authSubscription.unsubscribe();
     }
   }
-  
+
 }

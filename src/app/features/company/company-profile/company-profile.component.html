@@ -1,0 +1,78 @@
+<div class="mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <!-- Background Cover & Logo -->
+    <div class="relative h-48 bg-gray-300 rounded-t-lg">
+        <img src="{{ company.backgroundDp || 'assets/default-cover.jpg' }}" alt="Company Background"
+            class="w-full h-full object-cover rounded-t-lg">
+        <div class="absolute -bottom-10 left-6 w-20 h-20 bg-white p-1 shadow-lg rounded-full">
+            <img src="{{ company.companyLogo || 'assets/default-logo.png' }}" alt="Company Logo"
+                class="w-full h-full object-cover rounded-full">
+        </div>
+    </div>
+
+    <!-- Company Info -->
+    <div class="mt-12 flex justify-between items-center px-6">
+        <h1 class="text-xl font-bold">{{ company.companyName || 'Company Name' }}</h1>
+        <button (click)="showEditForm = true" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Edit
+            Profile</button>
+    </div>
+
+    <div class="mt-4 px-6 grid grid-cols-2 gap-4">
+        <p class="flex items-center"><span class="material-icons text-gray-500 mr-2">language</span> <a
+                href="{{ company.website }}" class="text-blue-600">{{ company.website || 'website' }}</a></p>
+        <p class="flex items-center"><span class="material-icons text-gray-500 mr-2">place</span> {{ company.location ||
+            'location' }}</p>
+        <p class="flex items-center"><span class="material-icons text-gray-500 mr-2">groups</span> {{
+            company.companySize || 'size' }}</p>
+        <p class="flex items-center"><span class="material-icons text-gray-500 mr-2">calendar_today</span> {{
+            company.workingDays || 'working days' }}</p>
+    </div>
+
+    <!-- About Us -->
+    <div class="mt-6 px-6">
+        <h2 class="text-lg font-semibold">About Us</h2>
+        <p class="text-gray-600">{{ company.aboutCompany || 'About us not updated' }}</p>
+    </div>
+
+    <!-- Company Images -->
+    <div class="mt-6 px-6">
+        <h2 class="text-lg font-semibold">Company Images</h2>
+        <div class="flex space-x-4 overflow-x-auto py-2">
+            <img *ngFor="let img of company.images; let i =index" [src]="img" alt="'Company image ' + (i + 1)" class="w-32 h-32 object-cover rounded-lg shadow-md">
+        </div>
+    </div>
+
+    <!-- Recent Job Openings -->
+    <div class="mt-6 px-6">
+        <h2 class="text-lg font-semibold">Recent Job Openings</h2>
+        <div *ngIf="company.jobs?.length > 0; else noJobs">
+            <ul class="space-y-2">
+                <li *ngFor="let job of company.jobs" class="p-4 border rounded-lg shadow-sm">
+                    <h3 class="text-md font-semibold">{{ job.title }}</h3>
+                    <p class="text-gray-500">{{ job.location }}</p>
+                </li>
+            </ul>
+        </div>
+        <ng-template #noJobs>
+            <p class="text-gray-500">No job opening posted</p>
+        </ng-template>
+    </div>
+
+
+
+     <!-- Edit Profile Modal (With Blur Effect) -->
+     <div *ngIf="showEditForm" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex justify-center items-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/2 relative">
+            <!-- Close Button -->
+            <button (click)="showEditForm = false" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900">
+                <span class="material-icons">close</span>
+            </button>
+
+            <!-- Edit Profile Component -->
+            <app-edit-company-profile 
+                [companyProfile]="companyProfile"
+                (profileUpdated)="updateCompanyProfile($event)">
+            </app-edit-company-profile>
+        </div>
+    </div>
+
+</div>

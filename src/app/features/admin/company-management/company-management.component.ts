@@ -7,6 +7,7 @@ import { ModalComponent } from '../../../shared/modal/modal.component';
 import { Company } from '../../../core/models/Company.model';
 import { TableComponent } from '../../../shared/table/table.component';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { CompanyProfile } from '../../../core/models/CompanyProfile.model';
 
 
 
@@ -157,10 +158,16 @@ totalPages(): number {
   }
 
   submitCompany() {
-    const newCompany = {
-      name: this.companyName,
-      email: this.companyEmail,
+    const newCompany : CompanyProfile = {
       website: this.companyWebsite,
+      companyId: 0,
+      companyName: '',
+      industry: '',
+      location: '',
+      companySize: '',
+      companyLogo: '',
+      backgroundDp: '',
+      images: []
     };
 
     this.adminService.addCompany(newCompany).subscribe(() => {

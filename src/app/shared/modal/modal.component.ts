@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CompanyProfile } from '../../core/models/CompanyProfile.model';
 
 @Component({
   selector: 'app-modal',
@@ -13,7 +14,7 @@ export class ModalComponent {
   @Input() isOpen = false;
   @Input() modalType: 'addCompany' | 'view' | 'delete' = 'view';
   @Output() closeModal = new EventEmitter<void>();
-  @Output() confirm = new EventEmitter<any>();
+  @Output() confirm = new EventEmitter<CompanyProfile>();
 
   companyName = '';
   companyEmail = '';
@@ -25,10 +26,16 @@ export class ModalComponent {
 
   submit() {
     if (this.modalType === 'addCompany') {
-      const newCompany = {
-        name: this.companyName,
-        email: this.companyEmail,
+      const newCompany :CompanyProfile = {
+        companyName: this.companyName,
         website: this.companyWebsite,
+        companyId: 0,
+        industry: '',
+        location: '',
+        companySize: '',
+        companyLogo: '',
+        backgroundDp: '',
+        images: []
       };
       this.confirm.emit(newCompany);
     }

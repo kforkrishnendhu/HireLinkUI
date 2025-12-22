@@ -15,8 +15,8 @@ import { RouterModule } from '@angular/router';
 export class ForgotPasswordComponent implements OnInit, OnDestroy {
   forgotPasswordForm!: FormGroup;
   private subscription!: Subscription;
-  successMessage: string = '';
-  errorMessage: string = '';
+  successMessage = '';
+  errorMessage = '';
 
   constructor(private fb: FormBuilder, private authService: AuthService) {}
 

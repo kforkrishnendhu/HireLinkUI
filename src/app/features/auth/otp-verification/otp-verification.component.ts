@@ -17,10 +17,10 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
   submitted = false;
   errorMessage: string | null = null;
   email = '';
-  countdown = 60; // Timer starts from 60 seconds
-  timerActive = true; // Timer is active initially
-  interval: any;
-  private subscriptions: Subscription = new Subscription(); // Store all subscriptions
+  countdown = 60; 
+  timerActive = true; 
+  interval: number|null=null;
+  private subscriptions: Subscription = new Subscription(); 
 
 
   constructor(
@@ -37,7 +37,7 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.subscriptions.add(queryParamsSub); // Add to subscriptions
+    this.subscriptions.add(queryParamsSub);
 
     this.startCountdown();
     this.otpForm = this.fb.group({
@@ -51,14 +51,17 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
 
   startCountdown() {
     this.timerActive = true;
-    this.countdown = 60; // Reset timer to 60 seconds
+    this.countdown = 60; 
 
-    this.interval = setInterval(() => {
+    this.interval = window.setInterval(() => {
       if (this.countdown > 0) {
         this.countdown--;
       } else {
-        this.timerActive = false; // Enable "Resend OTP" button
-        clearInterval(this.interval);
+        this.timerActive = false; 
+        if (this.interval !== null) {
+          clearInterval(this.interval);
+          this.interval = null;
+        }
       }
     }, 1000);
   }
@@ -77,7 +80,7 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
         if (response.success) {
           console.log('OTP Verified Successfully:', response);
           alert('OTP Verified! Redirecting to Login...');
-          this.router.navigate(['auth/login']); // Redirect to login page
+          this.router.navigate(['auth/login']); 
         }
         else {
           this.errorMessage = 'Invalid OTP. Please try again.';
@@ -113,7 +116,10 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe(); // Unsubscribe from all subscriptions
-    clearInterval(this.interval); // Clear the countdown timer
+    if (this.interval !== null) {
+      clearInterval(this.interval);
+      this.interval = null;
+    }
   }
 
 }

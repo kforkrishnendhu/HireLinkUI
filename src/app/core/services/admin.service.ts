@@ -2,19 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { JobSeeker } from '../models/JobSeeker.model';
+import { Company } from '../models/Company.model';
+import { CompanyProfile } from '../models/CompanyProfile.model';
 
-
-interface JobSeeker {
-  userId: number;
-  fullName: string;
-  email: string;
-}
-
-interface Company {
-  userId: number;
-  fullName: string;
-  email: string;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +41,7 @@ export class AdminService {
     return this.http.delete<void>(`${this.apiUrl}/delete-company/${id}`);
   }
 
-  addCompany(company: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/add-company`, company);
+  addCompany(company: CompanyProfile): Observable<CompanyProfile> {
+    return this.http.post<CompanyProfile>(`${this.apiUrl}/add-company`, company);
   }
 }

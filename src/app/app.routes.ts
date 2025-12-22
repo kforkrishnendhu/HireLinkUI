@@ -10,14 +10,13 @@ import { OtpVerificationComponent } from './features/auth/otp-verification/otp-v
 import { DashboardComponent } from './features/admin/dashboard/dashboard.component';
 import { CompanyManagementComponent } from './features/admin/company-management/company-management.component';
 import { UnauthorizedComponent } from './features/auth/unauthorized/unauthorized.component';
-import { adminGuard } from './core/guards/admin.guard';
 import { HomeComponent } from './features/auth/home/home.component';
 import { JobSeekerComponent } from './features/job-seeker/job-seeker/job-seeker.component';
-import { jobseekerGuard } from './core/guards/jobseeker.guard';
 import { CompanyComponent } from './features/company/company/company.component';
-import { companyGuard } from './core/guards/company.guard';
 import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './features/auth/reset-password/reset-password.component';
+import { CompanyProfileComponent } from './features/company/company-profile/company-profile.component';
+import { CompanyDashboardComponent } from './features/company/company-dashboard/company-dashboard.component';
 
 const roleGuard = (role: string) => () => {
     const authService = inject(AuthService);
@@ -45,7 +44,7 @@ export const routes: Routes = [
     {
         path: 'admin',
         component: AdminComponent,
-        canActivate: [AuthGuard, adminGuard],
+        canActivate: [AuthGuard, roleGuard("Admin")],
         children: [
             { path: 'jobseekers', component: JobSeekerManagementComponent },
             { path: 'company', component: CompanyManagementComponent },
@@ -55,7 +54,7 @@ export const routes: Routes = [
     {
         path: 'jobseeker',
         component: JobSeekerComponent,
-        canActivate: [AuthGuard, jobseekerGuard],
+        canActivate: [AuthGuard, roleGuard("JobSeeker")],
         children: [
             { path: 'jobseekers', component: JobSeekerComponent }
         ]
@@ -63,9 +62,12 @@ export const routes: Routes = [
     {
         path: 'company',
         component: CompanyComponent,
-        canActivate: [AuthGuard, companyGuard],
+        canActivate: [AuthGuard, roleGuard("Company")],
         children: [
-            { path: 'company', component: CompanyComponent }
+            { path: 'company', component: CompanyComponent },
+            { path: 'company-profile', component: CompanyProfileComponent },
+            { path: 'company-dashboard', component: CompanyDashboardComponent },
+            { path: 'jobs/job-list', loadComponent: () => import('./features/company/jobs/job-list/job-list.component').then(m => m.JobListComponent) }
         ]
     },
     { path: '', redirectTo: 'auth/login', pathMatch: 'full' },  // Default Route

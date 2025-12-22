@@ -5,13 +5,12 @@ import { Router } from '@angular/router';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../core/services/auth.service';
 
-export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
+export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
   const router = inject(Router);
   const authService = inject(AuthService);
 
   const token = authService.getAccessToken();
 
-  // Attach token to headers if available
   let modifiedReq = token
     ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
     : req;
@@ -20,7 +19,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           console.log('refreshing..........');
-          // Try refreshing the token
+          
           return authService.refreshAccessToken().pipe(
             switchMap(newToken => {
               modifiedReq = req.clone({ setHeaders: { Authorization: `Bearer ${newToken}` } });

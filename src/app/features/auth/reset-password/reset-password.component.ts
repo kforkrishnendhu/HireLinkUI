@@ -16,8 +16,8 @@ import { CommonModule } from '@angular/common';
 export class ResetPasswordComponent implements OnInit, OnDestroy {
   resetForm!: FormGroup;
   token: string | null = null;
-  isTokenValid: boolean = false;
-  errorMessage: string = '';
+  isTokenValid = false;
+  errorMessage = '';
   private subscriptions: Subscription = new Subscription(); // Store all subscriptions
 
   constructor(

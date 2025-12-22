@@ -5,6 +5,10 @@ import { Observable, catchError, map, tap, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from '../../../environments/environment';
 import { LoginResponse } from '../models/LoginResponse';
+import { RegisterRequest } from '../models/RegisterRequest.model';
+import { RegisterResponse } from '../models/RegisterResponse.model';
+import { APIResponse } from '../models/api-response.model';
+import { JwtPayload } from '../models/jwt-payload.model';
 
 
 
@@ -30,27 +34,27 @@ export class AuthService {
     );
   }
 
-  register(fullName: string, email: string, password: string, confirmPassword:string, role: string): Observable<any> {
-    const userRegisterDto = {
+  register(fullName: string, email: string, password: string, confirmPassword: string, role: string): Observable<RegisterResponse> {
+    const userRegisterDto: RegisterRequest = {
       fullName,
       email,
       password,
       confirmPassword,
       role
     };
-    return this.http.post<any>(`${this.apiUrl}/register`, userRegisterDto);
+    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, userRegisterDto);
   }
 
-  verifyOtp(email: string, otp: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/verify-otp`, { email, otp });
+  verifyOtp(email: string, otp: string): Observable<APIResponse> {
+    return this.http.post<APIResponse>(`${this.apiUrl}/verify-otp`, { email, otp });
   }
 
-  resendOtp(email: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/resend-otp`, { email });
+  resendOtp(email: string): Observable<APIResponse> {
+    return this.http.post<APIResponse>(`${this.apiUrl}/resend-otp`, { email });
   }
 
-  forgotPassword(email: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/forgot-password`, { email });
+  forgotPassword(email: string): Observable<APIResponse> {
+    return this.http.post<APIResponse>(`${this.apiUrl}/forgot-password`, { email });
   }
 
   verifyResetToken(token: string): Observable<boolean> {
@@ -60,7 +64,7 @@ export class AuthService {
   resetPassword(token: string, newPassword: string): Observable<boolean> {
     return this.http.post<boolean>(`${this.apiUrl}/reset-password`, { token, newPassword });
   }
-  
+
   refreshAccessToken(): Observable<string> {
     const refreshToken = this.getRefreshToken();
     if (!refreshToken) {
@@ -69,11 +73,11 @@ export class AuthService {
     }
 
     return this.http.post<{ token: string; refreshToken: string }>(
-      `${this.apiUrl}/refresh-token`, 
+      `${this.apiUrl}/refresh-token`,
       { refreshToken }
     ).pipe(
       tap(response => {
-        this.saveToken(response.token,response.refreshToken);
+        this.saveToken(response.token, response.refreshToken);
       }),
       map(response => response.token), // Extract only accessToken for return type
       catchError(() => {
@@ -112,9 +116,9 @@ export class AuthService {
     }
 
     try {
-      const decodedToken: any = jwtDecode(token);
+      const decodedToken = jwtDecode<JwtPayload>(token);
       console.log('Decoded Token:', decodedToken);
-      
+
       return (
         decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ||
         decodedToken['role'] ||
@@ -124,38 +128,61 @@ export class AuthService {
       console.error('Error decoding token:', error);
       return null;
     }
-}
-
- // Extract user email from token
- getUserEmail(): string | null {
-  const token = this.getAccessToken();
-  console.log(token);
-  if (!token) {
-    console.error('No access token found.');
-    return null;
   }
 
-  try {
-    const decodedToken: any = jwtDecode(token);
-    console.log('Decoded Token:', decodedToken);
+  // Extract user email from token
+  getUserEmail(): string | null {
+    const token = this.getAccessToken();
+    console.log(token);
+    if (!token) {
+      console.error('No access token found.');
+      return null;
+    }
 
-    return (
-      decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ||
-      decodedToken['email'] ||
-      null
-    );
-  } catch (error) {
-    console.error('Error decoding token:', error);
-    return null;
+    try {
+      const decodedToken = jwtDecode<JwtPayload>(token);
+      console.log('Decoded Token:', decodedToken);
+
+      return (
+        decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ||
+        decodedToken['email'] ||
+        null
+      );
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
   }
-}
+
+  getUserId(): number | null {
+    const token = this.getAccessToken();
+    if (!token) return null;
+
+    try {
+      const decodedToken = jwtDecode<JwtPayload>(token);
+      return decodedToken['sub'] ? Number(decodedToken.sub) : null;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  }
 
 
 
   isTokenExpired(token: string): boolean {
-    const decodedToken: any = jwtDecode(token);
-    const currentTime = Math.floor(Date.now() / 1000);
-    return decodedToken.exp < currentTime;
+    try {
+      const decodedToken = jwtDecode<JwtPayload>(token);
+      const currentTime = Math.floor(Date.now() / 1000);
+      if(!decodedToken.exp)
+      {
+        return true;
+      }
+      return decodedToken.exp < currentTime;
+    }
+    catch{
+      return true;
+    }
+    
   }
 
   // Check if user is logged in
