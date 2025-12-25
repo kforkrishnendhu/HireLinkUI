@@ -1,1 +1,91 @@
-<p>job-form works!</p>
+<form [formGroup]="jobForm"
+      (ngSubmit)="submit()"
+      class="space-y-6">
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Job Title</label>
+    <input type="text"
+           formControlName="jobTitle"
+           class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+  </div>
+  
+  <div>
+    <label class="block text-sm font-medium mb-1">Company Name</label>
+    <input type="text"
+           formControlName="companyName"
+           class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Job Description</label>
+    <textarea rows="4"
+              formControlName="jobDescription"
+              class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500"></textarea>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Requirements</label>
+    <textarea rows="3"
+              formControlName="requirements"
+              class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500"></textarea>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Location</label>
+    <input type="text"
+           formControlName="location"
+           class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Job Type</label>
+    <select formControlName="jobType"
+            class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+      <option value="">Select type</option>
+      <option value="Full-Time">Full-Time</option>
+      <option value="Part-Time">Part-Time</option>
+      <option value="Contract">Contract</option>
+      <option value="Internship">Internship</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Salary Range</label>
+    <input type="text"
+           formControlName="salaryRange"
+           placeholder="e.g. 6–10 LPA"
+           class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Status</label>
+    <select formControlName="status"
+            class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+      <option value="Active">Active</option>
+      <option value="Closed">Closed</option>
+      <option value="Draft">Draft</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Expiry Date</label>
+    <input type="date"
+           formControlName="expiryDate"
+           class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+  </div>
+
+  <div class="flex justify-end gap-3 pt-4">
+    <button type="button"
+            (click)="onCancel()"
+            class="px-4 py-2 rounded-lg border hover:bg-gray-100">
+      Cancel
+    </button>
+
+    <button type="submit"
+            [disabled]="jobForm.invalid"
+            class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50">
+      Create Job
+    </button>
+  </div>
+
+</form>

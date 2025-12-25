@@ -10,5 +10,6 @@ export interface CompanyProfile {
     backgroundDp: string;
     images: string[];
     workingDays?: string;
+    isProfileCompleted: boolean;
     // jobOpenings: { title: string; location: string }[];    make it from another table. 
   }

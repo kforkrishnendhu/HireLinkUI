@@ -1,3 +1,12 @@
+<div *ngIf="!company.isProfileCompleted" class="profile-progress">
+    <p>Profile completion</p>
+    <div class="bar">
+        <div class="fill" [style.width.%]="30"></div>
+    </div>
+    <small>Complete your profile to unlock job posting</small>
+</div>
+
+
 <div class="mx-auto p-6 bg-white shadow-lg rounded-lg">
     <!-- Background Cover & Logo -->
     <div class="relative h-48 bg-gray-300 rounded-t-lg">
@@ -17,13 +26,13 @@
     </div>
 
     <div class="mt-4 px-6 grid grid-cols-2 gap-4">
-        <p class="flex items-center"><span class="material-icons text-gray-500 mr-2">language</span> <a
-                href="{{ company.website }}" class="text-blue-600">{{ company.website || 'website' }}</a></p>
-        <p class="flex items-center"><span class="material-icons text-gray-500 mr-2">place</span> {{ company.location ||
+        <p class="flex items-center"><span class="material-icons text-gray-500 mr-2">language</span>Website: <a
+                href="#" class="text-blue-600">{{ company.website || 'website' }}</a></p>
+        <p class="flex items-center"><span class="material-icons text-gray-500 mr-2">place</span> Location: {{ company.location ||
             'location' }}</p>
-        <p class="flex items-center"><span class="material-icons text-gray-500 mr-2">groups</span> {{
+        <p class="flex items-center"><span class="material-icons text-gray-500 mr-2">groups</span>Company Size:{{
             company.companySize || 'size' }}</p>
-        <p class="flex items-center"><span class="material-icons text-gray-500 mr-2">calendar_today</span> {{
+        <p class="flex items-center"><span class="material-icons text-gray-500 mr-2">calendar_today</span> Working Days: {{
             company.workingDays || 'working days' }}</p>
     </div>
 
@@ -37,11 +46,12 @@
     <div class="mt-6 px-6">
         <h2 class="text-lg font-semibold">Company Images</h2>
         <div class="flex space-x-4 overflow-x-auto py-2">
-            <img *ngFor="let img of company.images; let i =index" [src]="img" alt="'Company image ' + (i + 1)" class="w-32 h-32 object-cover rounded-lg shadow-md">
+            <img *ngFor="let img of company.images; let i =index" [src]="img" alt="'Company image ' + (i + 1)"
+                class="w-32 h-32 object-cover rounded-lg shadow-md">
         </div>
     </div>
 
-    <!-- Recent Job Openings -->
+    <!-- Recent Job Openings
     <div class="mt-6 px-6">
         <h2 class="text-lg font-semibold">Recent Job Openings</h2>
         <div *ngIf="company.jobs?.length > 0; else noJobs">
@@ -55,22 +65,20 @@
         <ng-template #noJobs>
             <p class="text-gray-500">No job opening posted</p>
         </ng-template>
-    </div>
+    </div> -->
 
 
 
-     <!-- Edit Profile Modal (With Blur Effect) -->
-     <div *ngIf="showEditForm" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex justify-center items-center z-50">
+    <!-- Edit Profile Modal -->
+    <div *ngIf="showEditForm"
+        class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex justify-center items-center z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-1/2 relative">
-            <!-- Close Button -->
+          
             <button (click)="showEditForm = false" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900">
                 <span class="material-icons">close</span>
             </button>
 
-            <!-- Edit Profile Component -->
-            <app-edit-company-profile 
-                [companyProfile]="companyProfile"
-                (profileUpdated)="updateCompanyProfile($event)">
+            <app-edit-company-profile [companyProfile]="companyProfile" (profileUpdated)="updateCompanyProfile($event)">
             </app-edit-company-profile>
         </div>
     </div>

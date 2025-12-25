@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { EditCompanyProfileComponent } from '../edit-company-profile/edit-company-profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
+import { CompanyState } from '../../../core/state/company.state';
 
 @Component({
   selector: 'app-company-profile',
@@ -23,14 +24,15 @@ export class CompanyProfileComponent implements OnInit {
     companySize: '',
     companyLogo: '',
     backgroundDp: '',
-    images: []
+    images: [],
+    isProfileCompleted: false
   };
   isLoading = true;
   showEditForm = false;
   companyProfile: CompanyProfile = {} as CompanyProfile;
 
   companyId = 0;
-  constructor(private companyService: CompanyService, private route: ActivatedRoute, private authService: AuthService) {}
+  constructor(private companyService: CompanyService, private route: ActivatedRoute, private authService: AuthService, private companyState:CompanyState) {}
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
@@ -49,6 +51,7 @@ export class CompanyProfileComponent implements OnInit {
         if (response.success) {
           this.company = response.data;
           this.companyProfile=response.data;
+          this.companyState.isProfileCompleted.set(response.data.isProfileCompleted);
           console.log(response.data)
         } else {
           console.error('Failed to load company profile');
@@ -69,12 +72,13 @@ export class CompanyProfileComponent implements OnInit {
       .subscribe({
         next: (response) => {
           if (response.success) {
-            console.log('Update success:', response.message);
-            this.companyProfile = updatedProfile;
-            this.company = updatedProfile;
+            console.log('Update success:');
+            this.companyProfile = response.data;
+            this.company = response.data;
+            this.companyState.isProfileCompleted.set(response.data.isProfileCompleted);
             this.showEditForm = false;
           } else {
-            console.error('Update failed:', response.message);
+            console.error('Update failed:');
           }
         },
         error: (err) => {

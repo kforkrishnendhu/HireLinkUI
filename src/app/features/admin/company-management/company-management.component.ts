@@ -167,7 +167,8 @@ totalPages(): number {
       companySize: '',
       companyLogo: '',
       backgroundDp: '',
-      images: []
+      images: [],
+      isProfileCompleted: false
     };
 
     this.adminService.addCompany(newCompany).subscribe(() => {

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { APIResponse } from '../../../core/models/api-response.model';
 
 @Component({
   selector: 'app-forgot-password',
@@ -36,7 +37,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     this.errorMessage = '';
 
     this.subscription = this.authService.forgotPassword(email).subscribe({
-      next: (response: boolean) => {
+      next: (response: APIResponse) => {
         if (response) {
           this.successMessage = 'Password reset link sent to your email!';
           this.errorMessage = ''; // Clear any previous error messages

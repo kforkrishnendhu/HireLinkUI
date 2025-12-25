@@ -35,7 +35,8 @@ export class ModalComponent {
         companySize: '',
         companyLogo: '',
         backgroundDp: '',
-        images: []
+        images: [],
+        isProfileCompleted: false
       };
       this.confirm.emit(newCompany);
     }

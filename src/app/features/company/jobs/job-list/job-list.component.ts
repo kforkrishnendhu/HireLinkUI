@@ -1,18 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ModalComponent } from '../../../../shared/modal/modal.component';
 import { TableComponent } from '../../../../shared/table/table.component';
 import { Job } from '../../../../core/models/Job.model';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { CompanyService } from '../../../../core/services/company.service';
 import { AuthService } from '../../../../core/services/auth.service';
+import { CompanyState } from '../../../../core/state/company.state';
+import { JobFormComponent } from "../job-form/job-form.component";
 
 @Component({
   selector: 'app-job-list',
   standalone: true,
-  imports: [CommonModule,FormsModule,RouterModule,ModalComponent,TableComponent],
+  imports: [CommonModule, FormsModule, RouterModule, ModalComponent, TableComponent, JobFormComponent],
   templateUrl: './job-list.component.html',
   styleUrl: './job-list.component.scss'
 })
@@ -30,6 +32,10 @@ export class JobListComponent implements OnInit {
 
   companyId = 0;
 
+  showJobForm=false;
+  showIncompleteProfileModal=false;
+  isSubmittingJob=false;
+
   columns = [
     { key: 'jobId', label: 'Job ID' },
     { key: 'jobTitle', label: 'Title' },
@@ -46,7 +52,8 @@ export class JobListComponent implements OnInit {
     { label: 'Delete', icon: '❌', action: 'delete', class: 'text-red-500 hover:text-red-700' }
   ];
 
-  constructor(private companyService: CompanyService,private authService:AuthService) {}
+
+  constructor(private companyService: CompanyService,private authService:AuthService, public companyState:CompanyState, private router:Router) {}
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
@@ -81,7 +88,7 @@ export class JobListComponent implements OnInit {
         this.filteredJobs = response.data.jobs;
         this.filteredJobs = this.jobs.map(job => ({
           ...job,
-          salaryRange: `₹${job.salaryRange}` // Or format it as you like
+          salaryRange: `₹${job.salaryRange}` 
         }));
         this.totalJobs = response.data.totalCount;
       } else {
@@ -141,7 +148,26 @@ export class JobListComponent implements OnInit {
   }
 
   addJob() {
-    // Optional: Add job functionality
-    alert("Add Job clicked!");
+    if (!this.companyState.isProfileCompleted()) {
+      this.showIncompleteProfileModal = true;
+      return;
+    }
+  
+    this.showJobForm = true;
+  }
+
+  goToCompanyProfile() {
+    this.showIncompleteProfileModal = false;
+    this.router.navigate(['/company/company-profile']);
+  }
+
+  onJobCreated()
+  {
+    this.showJobForm=false;
+    this.loadJobs();
+  }
+
+  ngOnDestroy(): void {
+    this.showJobForm = false;
   }
 }

@@ -18,8 +18,8 @@ export class CompanyService {
     return this.http.get<{ success: boolean; data: CompanyProfile }>(`${this.apiUrl}/profile/${companyId}`);
   }
 
-  updateCompanyProfile(companyId: number, profileData: Partial<CompanyProfile>): Observable<{ success: boolean; message: string }> {
-    return this.http.put<{ success: boolean; message: string }>(`${this.apiUrl}/update-profile/${companyId}`, profileData);
+  updateCompanyProfile(companyId: number, profileData: Partial<CompanyProfile>): Observable<{ success: boolean; data: CompanyProfile }> {
+    return this.http.put<{ success: boolean; data: CompanyProfile }>(`${this.apiUrl}/update-profile/${companyId}`, profileData);
   }
 
   getJobs(companyId: number, page = 1, pageSize = 10, search?: string): Observable<{
