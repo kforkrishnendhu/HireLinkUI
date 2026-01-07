@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
-import { RouterOutlet } from "@angular/router";
 
 @Component({
-  selector: 'app-job-seeker',
+  selector: 'app-job-seeker-dashboard',
   standalone: true,
-  imports: [RouterOutlet],
-  templateUrl: './job-seeker.component.html',
-  styleUrl: './job-seeker.component.scss'
+  imports: [],
+  templateUrl: './job-seeker-dashboard.component.html',
+  styleUrl: './job-seeker-dashboard.component.scss'
 })
-export class JobSeekerComponent implements OnInit {
+export class JobSeekerDashboardComponent implements OnInit{
 
   username: string | null = null;
   constructor(private authService:AuthService) {}
@@ -22,5 +21,4 @@ export class JobSeekerComponent implements OnInit {
   logout() {
   this.authService.logout();
   }
-  
 }

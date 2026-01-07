@@ -17,6 +17,7 @@ import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-
 import { ResetPasswordComponent } from './features/auth/reset-password/reset-password.component';
 import { CompanyProfileComponent } from './features/company/company-profile/company-profile.component';
 import { CompanyDashboardComponent } from './features/company/company-dashboard/company-dashboard.component';
+import { JobSeekerDashboardComponent } from './features/job-seeker/job-seeker-dashboard/job-seeker-dashboard.component';
 
 const roleGuard = (role: string) => () => {
     const authService = inject(AuthService);
@@ -56,7 +57,8 @@ export const routes: Routes = [
         component: JobSeekerComponent,
         canActivate: [AuthGuard, roleGuard("JobSeeker")],
         children: [
-            { path: 'jobseekers', component: JobSeekerComponent }
+            { path: 'jobseekers', component: JobSeekerComponent },
+            { path: 'job-seeker-dashboard', component: JobSeekerDashboardComponent },
         ]
     },
     {
