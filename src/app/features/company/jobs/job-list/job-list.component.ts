@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ModalComponent } from '../../../../shared/modal/modal.component';
@@ -18,7 +18,7 @@ import { JobFormComponent } from "../job-form/job-form.component";
   templateUrl: './job-list.component.html',
   styleUrl: './job-list.component.scss'
 })
-export class JobListComponent implements OnInit {
+export class JobListComponent implements OnInit, OnDestroy {
   jobs: Job[] = [];
   filteredJobs: Job[] = [];
   searchTerm = new Subject<string>();
@@ -161,10 +161,19 @@ export class JobListComponent implements OnInit {
     this.router.navigate(['/company/company-profile']);
   }
 
-  onJobCreated()
+  onJobCreated(job:Job)
   {
-    this.showJobForm=false;
-    this.loadJobs();
+    this.companyService.createJob(job).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.showJobForm = false;
+          this.loadJobs();
+        }
+      },
+      error: (err) => {
+        console.error('Job creation failed', err);
+      }
+    });
   }
 
   ngOnDestroy(): void {

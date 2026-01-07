@@ -1,23 +1,24 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Job } from '../../../../core/models/Job.model';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-job-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [CommonModule,ReactiveFormsModule],
   templateUrl: './job-form.component.html',
   styleUrl: './job-form.component.scss'
 })
 export class JobFormComponent {
 
   @Output() jobCreated = new EventEmitter<Job>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelEvent = new EventEmitter<void>();
 
   jobForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService:AuthService) {
     this.jobForm = this.fb.group({
       jobTitle: ['', Validators.required],
       jobDescription: ['', Validators.required],
@@ -26,16 +27,20 @@ export class JobFormComponent {
       jobType: ['', Validators.required],
       salaryRange: [''],
       status: ['Active', Validators.required],
-      expiryDate: [''],
-      companyName: ['', Validators.required]
+      expiryDate: ['']
     });
   }
 
   submit(): void {
-    if (this.jobForm.invalid) return;
-
+    if (this.jobForm.invalid)
+    {
+      this.jobForm.markAllAsTouched();
+      return;
+    } 
+    const cid = this.authService.getUserId();
     const job: Job = {
-      jobId: 0, // backend will generate
+      jobId: 0, 
+      companyId: cid,
       ...this.jobForm.value
     };
 
@@ -43,6 +48,6 @@ export class JobFormComponent {
   }
 
   onCancel(): void {
-    this.cancel.emit();
+    this.cancelEvent.emit();
   }
 }

@@ -1,66 +1,74 @@
-<form [formGroup]="jobForm"
-      (ngSubmit)="submit()"
-      class="space-y-6">
+<form [formGroup]="jobForm" (ngSubmit)="submit()" class="space-y-6">
 
   <div>
-    <label class="block text-sm font-medium mb-1">Job Title</label>
-    <input type="text"
-           formControlName="jobTitle"
-           class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
-  </div>
-  
-  <div>
-    <label class="block text-sm font-medium mb-1">Company Name</label>
-    <input type="text"
-           formControlName="companyName"
-           class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+    <label for="jobTitle" class="block text-sm font-medium mb-1">Job Title</label>
+    <input id="jobTitle" type="text" formControlName="jobTitle"
+      class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+
+    <p *ngIf="jobForm.get('jobTitle')?.invalid && jobForm.get('jobTitle')?.touched" class="text-red-500 text-sm mt-1">
+      Job title is required
+    </p>
   </div>
 
   <div>
-    <label class="block text-sm font-medium mb-1">Job Description</label>
-    <textarea rows="4"
-              formControlName="jobDescription"
-              class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500"></textarea>
+    <label for="jobDescription" class="block text-sm font-medium mb-1">Job Description</label>
+    <textarea id="jobDescription" rows="4" formControlName="jobDescription"
+      class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500"></textarea>
+
+    <p *ngIf="jobForm.get('jobDescription')?.invalid && jobForm.get('jobDescription')?.touched"
+      class="text-red-500 text-sm mt-1">
+      Job description is required
+    </p>
   </div>
 
   <div>
-    <label class="block text-sm font-medium mb-1">Requirements</label>
-    <textarea rows="3"
-              formControlName="requirements"
-              class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500"></textarea>
+    <label for="requirements" class="block text-sm font-medium mb-1">Requirements</label>
+    <textarea id="requirements" rows="3" formControlName="requirements"
+      class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500"></textarea>
+
+    <p *ngIf="jobForm.get('requirements')?.invalid && jobForm.get('requirements')?.touched"
+      class="text-red-500 text-sm mt-1">
+      Requirements is required
+    </p>
   </div>
 
   <div>
-    <label class="block text-sm font-medium mb-1">Location</label>
-    <input type="text"
-           formControlName="location"
-           class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+    <label for="location" class="block text-sm font-medium mb-1">Location</label>
+    <input id="location" type="text" formControlName="location"
+      class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+
+    <p *ngIf="jobForm.get('location')?.invalid && jobForm.get('location')?.touched" class="text-red-500 text-sm mt-1">
+      LOcation required
+    </p>
   </div>
 
   <div>
-    <label class="block text-sm font-medium mb-1">Job Type</label>
-    <select formControlName="jobType"
-            class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
-      <option value="">Select type</option>
+    <label for="jobType" class="block text-sm font-medium mb-1">Job Type</label>
+    <select id="jobType" formControlName="jobType" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
       <option value="Full-Time">Full-Time</option>
       <option value="Part-Time">Part-Time</option>
       <option value="Contract">Contract</option>
       <option value="Internship">Internship</option>
     </select>
+
+    <p *ngIf="jobForm.get('jobType')?.invalid && jobForm.get('jobType')?.touched" class="text-red-500 text-sm mt-1">
+      Please select a job type
+    </p>
   </div>
 
   <div>
-    <label class="block text-sm font-medium mb-1">Salary Range</label>
-    <input type="text"
-           formControlName="salaryRange"
-           placeholder="e.g. 6–10 LPA"
-           class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+    <label for="salaryRange" class="block text-sm font-medium mb-1">Salary Range</label>
+    <input id="salaryRange" type="text" formControlName="salaryRange" placeholder="e.g. 6–10 LPA"
+      class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+
+    <p *ngIf="jobForm.get('jobType')?.invalid && jobForm.get('jobType')?.touched" class="text-red-500 text-sm mt-1">
+      Required
+    </p>
   </div>
 
   <div>
-    <label class="block text-sm font-medium mb-1">Status</label>
-    <select formControlName="status"
-            class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+    <label for="status" class="block text-sm font-medium mb-1">Status</label>
+    <select id="status" formControlName="status" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
       <option value="Active">Active</option>
       <option value="Closed">Closed</option>
       <option value="Draft">Draft</option>
@@ -68,22 +76,18 @@
   </div>
 
   <div>
-    <label class="block text-sm font-medium mb-1">Expiry Date</label>
-    <input type="date"
-           formControlName="expiryDate"
-           class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+    <label for="expiryDate" class="block text-sm font-medium mb-1">Expiry Date</label>
+    <input id="expiryDate" type="date" formControlName="expiryDate"
+      class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
   </div>
 
   <div class="flex justify-end gap-3 pt-4">
-    <button type="button"
-            (click)="onCancel()"
-            class="px-4 py-2 rounded-lg border hover:bg-gray-100">
+    <button type="button" (click)="onCancel()" class="px-4 py-2 rounded-lg border hover:bg-gray-100">
       Cancel
     </button>
 
-    <button type="submit"
-            [disabled]="jobForm.invalid"
-            class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50">
+    <button type="submit" [disabled]="jobForm.invalid"
+      class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50">
       Create Job
     </button>
   </div>

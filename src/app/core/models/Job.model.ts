@@ -1,5 +1,6 @@
 export interface Job {
     jobId: number;
+    companyId:number;
     jobTitle: string;
     jobDescription: string;
     requirements: string;
@@ -8,6 +9,5 @@ export interface Job {
     salaryRange?: string;
     status: string;
     expiryDate?: Date;
-    companyName: string;
   }
   

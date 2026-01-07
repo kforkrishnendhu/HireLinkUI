@@ -47,6 +47,13 @@ export class CompanyService {
     }>(url);
   }
 
+  createJob(job: Job): Observable<{ success: boolean; data: Job; message: string }> {
+    return this.http.post<{ success: boolean; data: Job; message: string }>(
+      `${environment.apiUrl}/Job/create`,
+      job
+    );
+  }  
+
 
   deleteJob(jobId: number): Observable<{ success: boolean; message: string }> {
     return this.http.delete<{ success: boolean; message: string }>(`${environment.apiUrl}/Job/delete-jobs/${jobId}`);
